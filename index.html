@@ -12,7 +12,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'AW-17964636350');
     </script>
 
@@ -54,6 +53,492 @@
 
     /* ===================== UTILITY ===================== */
     .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===================== POPUP FLYER ===================== */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 34, 0.82);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: overlayIn 0.5s ease both;
+    }
+    .popup-overlay.closing {
+      animation: overlayOut 0.5s ease both;
+    }
+    @keyframes overlayIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes overlayOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .popup-card {
+      background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+      border: 1px solid rgba(201,169,110,0.3);
+      border-radius: 28px;
+      max-width: 580px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,169,110,0.1);
+    }
+    .popup-card.closing {
+      animation: cardOut 0.4s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: scale(0.85) translateY(30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes cardOut {
+      from { opacity: 1; transform: scale(1) translateY(0); }
+      to { opacity: 0; transform: scale(0.9) translateY(20px); }
+    }
+
+    /* Decorative rays background */
+    .popup-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .popup-card::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Gold top stripe */
+    .popup-stripe {
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    }
+
+    .popup-body {
+      padding: 36px 40px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 18px; right: 18px;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      z-index: 10;
+    }
+    .popup-close:hover {
+      background: rgba(201,169,110,0.2);
+      border-color: var(--gold);
+      transform: rotate(90deg);
+    }
+    .popup-close svg { width: 16px; height: 16px; color: rgba(255,255,255,0.7); }
+    .popup-close:hover svg { color: var(--gold); }
+
+    .popup-timer-ring {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 44px; height: 44px;
+      pointer-events: none;
+      z-index: 11;
+    }
+    .popup-timer-ring circle {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 113;
+      stroke-dashoffset: 0;
+      transform: rotate(-90deg);
+      transform-origin: 22px 22px;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .popup-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,169,110,0.12);
+      border: 1px solid rgba(201,169,110,0.3);
+      padding: 6px 14px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+    }
+    .popup-eyebrow span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .popup-eyebrow-dot {
+      width: 5px; height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 1.8s ease infinite;
+    }
+
+    .popup-headline {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.18;
+      margin-bottom: 14px;
+    }
+    .popup-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .popup-subtext {
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 26px;
+      font-weight: 300;
+    }
+
+    /* Price box */
+    .popup-price-box {
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 18px;
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .popup-price-left {
+      flex: 1;
+    }
+    .popup-price-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .popup-price-amount {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+    .popup-price-amount span {
+      font-size: 18px;
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+    .popup-price-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+    .popup-price-divider {
+      width: 1px;
+      height: 60px;
+      background: rgba(201,169,110,0.2);
+    }
+    .popup-includes {
+      flex: 1.2;
+    }
+    .popup-includes p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .popup-include-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-bottom: 5px;
+    }
+    .popup-include-item svg {
+      width: 13px; height: 13px;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .popup-include-item span {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.4;
+      font-weight: 300;
+    }
+
+    .popup-urgency {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,169,110,0.06);
+      border-left: 3px solid var(--gold);
+      padding: 10px 14px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 24px;
+    }
+    .popup-urgency svg { width: 14px; height: 14px; color: var(--gold); flex-shrink: 0; }
+    .popup-urgency span {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .popup-urgency strong { color: var(--gold-light); font-weight: 500; }
+
+    .popup-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 17px 24px;
+      background: var(--whatsapp);
+      color: var(--white);
+      border: none;
+      border-radius: 60px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.3);
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+    }
+    .popup-cta-btn:hover {
+      background: var(--whatsapp-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(37,211,102,0.45);
+    }
+    .popup-cta-btn svg { width: 20px; height: 20px; }
+
+    .popup-skip {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      font-weight: 300;
+    }
+    .popup-skip:hover { color: rgba(255,255,255,0.55); }
+
+    .popup-countdown-text {
+      color: rgba(255,255,255,0.35);
+      font-size: 11px;
+    }
+    .popup-countdown-text span {
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    /* ===================== PRICE SECTION (after trust bar) ===================== */
+    .consulting-price-section {
+      background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 60%, var(--navy-mid) 100%);
+      padding: 64px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .consulting-price-section::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cps-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .cps-left { }
+    .cps-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .cps-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .cps-title em { font-style: italic; color: var(--gold); }
+    .cps-desc {
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 340px;
+    }
+
+    .cps-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .cps-price-card {
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.3);
+      border-radius: 24px;
+      padding: 32px 36px;
+      text-align: center;
+      position: relative;
+    }
+    .cps-price-badge {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 40px;
+      white-space: nowrap;
+    }
+    .cps-price-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 8px;
+    }
+    .cps-price-amount {
+      font-family: var(--font-display);
+      font-size: 54px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .cps-price-currency {
+      font-size: 20px;
+      color: var(--gold);
+      vertical-align: super;
+      font-weight: 500;
+    }
+    .cps-price-unit {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    .cps-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cps-right-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .cps-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .cps-feature-icon {
+      width: 32px; height: 32px;
+      min-width: 32px;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cps-feature-icon svg { width: 15px; height: 15px; color: var(--gold); }
+    .cps-feature-text h4 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .cps-feature-text p {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .cps-cta-row {
+      margin-top: 48px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(201,169,110,0.12);
+      padding-top: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cps-cta-row p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+    .cps-cta-row p strong {
+      color: rgba(255,255,255,0.75);
+      font-weight: 500;
+    }
+
+    @media (max-width: 900px) {
+      .cps-inner { grid-template-columns: 1fr; gap: 36px; text-align: center; }
+      .cps-desc { margin: 0 auto; }
+      .cps-right { align-items: flex-start; max-width: 360px; margin: 0 auto; }
+    }
 
     /* ===================== TOPBAR ===================== */
     .topbar {
@@ -723,6 +1208,9 @@
       .btn { padding: 14px 26px; font-size: 14px; }
       .about-logo-box { max-width: 280px; }
       .final-cta-info { gap: 24px; }
+      .popup-body { padding: 28px 24px 32px; }
+      .popup-price-box { flex-direction: column; gap: 16px; }
+      .popup-price-divider { width: 100%; height: 1px; }
     }
 
     @media (max-width: 480px) {
@@ -732,10 +1220,78 @@
       .final-cta-buttons { flex-direction: column; align-items: center; }
       .final-cta-buttons .btn { width: 100%; justify-content: center; }
       .whatsapp-float { bottom: 20px; right: 20px; width: 54px; height: 54px; }
+      .popup-price-amount { font-size: 36px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===================== POPUP FLYER ===================== -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-card" id="popupCard">
+      <div class="popup-stripe"></div>
+
+      <!-- Close button with timer ring -->
+      <svg class="popup-timer-ring" id="timerRing" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" id="timerCircle"/>
+      </svg>
+      <button class="popup-close" id="popupClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="popup-body">
+        <div class="popup-eyebrow">
+          <div class="popup-eyebrow-dot"></div>
+          <span>Consulta Inicial · Oferta Especial</span>
+        </div>
+
+        <h2 class="popup-headline">La clave para resolver<br>su divorcio está a <em>un solo paso</em></h2>
+        <p class="popup-subtext">En una sola sesión con el Dr. Daniel Villanueva, usted sabrá exactamente qué hacer, cómo protegerse y cuánto tiempo tomará su proceso. Sin rodeos, sin tecnicismos innecesarios.</p>
+
+        <div class="popup-price-box">
+          <div class="popup-price-left">
+            <p class="popup-price-label">Consulta Inicial</p>
+            <div class="popup-price-amount"><span>$</span>150.000</div>
+            <p class="popup-price-note">COP · Pago único · Sin sorpresas</p>
+          </div>
+          <div class="popup-price-divider"></div>
+          <div class="popup-includes">
+            <p>Esto incluye:</p>
+            <div class="popup-include-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Análisis completo de su caso</span>
+            </div>
+            <div class="popup-include-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Estrategia legal personalizada</span>
+            </div>
+            <div class="popup-include-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Tiempos y costos estimados reales</span>
+            </div>
+            <div class="popup-include-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Respuestas a todas sus dudas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="popup-urgency">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Muchos clientes pagan <strong>más de $500.000 en orientación equivocada</strong> antes de llegar a nosotros. Una consulta bien hecha desde el inicio lo cambia todo.</span>
+        </div>
+
+        <a href="https://wa.me/573153378757?text=Hola%2C%20vi%20la%20oferta%20de%20consulta%20inicial%20por%20%24150.000%20y%20quiero%20agendarla%20para%20mi%20proceso%20de%20divorcio." class="popup-cta-btn" onclick="gtag('event','conversion',{'send_to':'IrT5CJGKyPsbEL6xmvZC'}); closePopup();">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar mi consulta por $150.000
+        </a>
+
+        <span class="popup-skip" id="popupSkip">
+          <span class="popup-countdown-text">Cerrar en <span id="countdownNum">10</span>s</span>
+        </span>
+      </div>
+    </div>
+  </div>
 
   <!-- TOPBAR -->
   <div class="topbar">
@@ -809,6 +1365,76 @@
           <h4>L-D 9AM-9PM</h4>
           <p>Disponibilidad amplia</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONSULTING PRICE SECTION ===================== -->
+  <section class="consulting-price-section">
+    <div class="container">
+      <div class="cps-inner fade-in">
+        <div class="cps-left">
+          <p class="cps-eyebrow">Consulta Inicial · Primer Paso</p>
+          <h2 class="cps-title">Todo lo que necesita saber<br>sobre su caso, <em>en una sola sesión</em></h2>
+          <p class="cps-desc">No pague miles de pesos en el proceso sin saber primero hacia dónde va. Con una consulta inicial, usted tendrá claridad total: qué hacer, cómo protegerse y cuál es el mejor camino legal para su situación.</p>
+        </div>
+
+        <div class="cps-center">
+          <div class="cps-price-card">
+            <div class="cps-price-badge">Precio justo · Sin letra pequeña</div>
+            <p class="cps-price-label">Consulta Inicial</p>
+            <div class="cps-price-amount"><span class="cps-price-currency">$</span>150.000</div>
+            <p class="cps-price-unit">COP · Pago único</p>
+          </div>
+        </div>
+
+        <div class="cps-right">
+          <p class="cps-right-title">En esta consulta usted recibe:</p>
+          <div class="cps-feature">
+            <div class="cps-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <div class="cps-feature-text">
+              <h4>Diagnóstico completo de su caso</h4>
+              <p>Análisis detallado de su situación y los riesgos legales que enfrenta</p>
+            </div>
+          </div>
+          <div class="cps-feature">
+            <div class="cps-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="cps-feature-text">
+              <h4>Estrategia legal clara y directa</h4>
+              <p>El camino más eficiente para proteger sus derechos e intereses</p>
+            </div>
+          </div>
+          <div class="cps-feature">
+            <div class="cps-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="cps-feature-text">
+              <h4>Tiempos y costos reales</h4>
+              <p>Sin promesas vacías: sepa exactamente qué esperar del proceso</p>
+            </div>
+          </div>
+          <div class="cps-feature">
+            <div class="cps-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div class="cps-feature-text">
+              <h4>Todas sus preguntas respondidas</h4>
+              <p>Un espacio sin prisa para resolver cada duda sobre su divorcio</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cps-cta-row fade-in">
+        <p><strong>¿Listo para dar el primer paso?</strong> Agende su consulta ahora mismo.</p>
+        <a href="https://wa.me/573153378757?text=Hola%2C%20quiero%20agendar%20la%20consulta%20inicial%20por%20%24150.000%20para%20mi%20proceso%20de%20divorcio." class="btn btn-whatsapp" onclick="gtag('event','conversion',{'send_to':'IrT5CJGKyPsbEL6xmvZC'});">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar consulta inicial — $150.000
+        </a>
       </div>
     </div>
   </section>
@@ -1056,20 +1682,68 @@
 
   <!-- SCRIPTS -->
   <script>
-    // FAQ Accordion
+    // ===================== POPUP COUNTDOWN & CLOSE =====================
+    const COUNTDOWN_SECONDS = 10;
+    const circumference = 2 * Math.PI * 18; // r=18 → ~113.1
+
+    let secondsLeft = COUNTDOWN_SECONDS;
+    const timerCircle = document.getElementById('timerCircle');
+    const countdownNum = document.getElementById('countdownNum');
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupCard = document.getElementById('popupCard');
+
+    // Init circle
+    timerCircle.style.strokeDasharray = circumference;
+    timerCircle.style.strokeDashoffset = '0';
+
+    function closePopup() {
+      popupOverlay.classList.add('closing');
+      popupCard.classList.add('closing');
+      setTimeout(() => {
+        popupOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 480);
+    }
+
+    // Countdown tick
+    const countdownInterval = setInterval(() => {
+      secondsLeft--;
+      countdownNum.textContent = secondsLeft;
+      // Animate ring: from full to empty
+      const progress = (COUNTDOWN_SECONDS - secondsLeft) / COUNTDOWN_SECONDS;
+      timerCircle.style.strokeDashoffset = circumference * progress;
+
+      if (secondsLeft <= 0) {
+        clearInterval(countdownInterval);
+        closePopup();
+      }
+    }, 1000);
+
+    // Close button
+    document.getElementById('popupClose').addEventListener('click', () => {
+      clearInterval(countdownInterval);
+      closePopup();
+    });
+
+    // Skip text
+    document.getElementById('popupSkip').addEventListener('click', () => {
+      clearInterval(countdownInterval);
+      closePopup();
+    });
+
+    // Prevent body scroll while popup open
+    document.body.style.overflow = 'hidden';
+
+    // ===================== FAQ Accordion =====================
     document.querySelectorAll('.faq-question').forEach(q => {
       q.addEventListener('click', () => {
         const item = q.parentElement;
         const answer = item.querySelector('.faq-answer');
         const isActive = item.classList.contains('active');
-
-        // Close all
         document.querySelectorAll('.faq-item').forEach(fi => {
           fi.classList.remove('active');
           fi.querySelector('.faq-answer').style.maxHeight = '0';
         });
-
-        // Open clicked if was closed
         if (!isActive) {
           item.classList.add('active');
           answer.style.maxHeight = answer.scrollHeight + 'px';
@@ -1077,18 +1751,15 @@
       });
     });
 
-    // Scroll animations
+    // ===================== Scroll animations =====================
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Google Ads Conversion Tracking placeholder
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
   </script>
